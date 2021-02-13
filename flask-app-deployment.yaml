@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-2-deployment
+spec:
+  selector:
+    matchLabels:
+      app: flask-app-2
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: flask-app-2
+    spec:
+      containers:
+      - name: flask-app-2
+        image: docker.io/gblankenship/kubernetes-1:v2
+        ports:
+        - containerPort: 8000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app-2-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: flask-app-2
+  ports:
+  - port: 5000
+    targetPort: 8000
